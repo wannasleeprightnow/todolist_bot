@@ -2,6 +2,7 @@ from telebot.async_telebot import AsyncTeleBot
 
 from utils.config import TOKEN
 from utils.exceptions import *
+from utils.date_validate import date_validate
 from handlers import *
 
 bot = AsyncTeleBot(TOKEN)
@@ -17,13 +18,20 @@ async def add_task(message):
     planned_date, *task_text = message.text.split(" ")[1:]
     task_text = " ".join(task_text).capitalize()
     telegram_user_id = message.chat.id
-    
+ 
     try:
+        await date_validate(planned_date)
         await add_task_handler(
             task_text=task_text,
             planned_date=planned_date,
             telegram_user_id=telegram_user_id
         )
+    except ValueError:
+        await bot.reply_to(
+            message,
+            "Введена дата в неверном формате."
+        )
+        return
     except TaskIsAlreadyPlanned:
         await bot.reply_to(message, "Это дело уже запланировано!")
     else:
@@ -37,6 +45,15 @@ async def add_task(message):
 async def view_day(message):
     date = message.text.split(" ")[1]
     telegram_user_id = message.chat.id
+
+    try:
+        await date_validate(date)
+    except ValueError:
+        await bot.reply_to(
+            message,
+            "Введена дата в неверном формате."
+        )
+        return
     
     days_tasks: str | None = await view_day_hadler(
         date=date,
@@ -61,11 +78,18 @@ async def delete_task(message):
     telegram_user_id = message.chat.id
     
     try:
+        await date_validate(date)
         task_text: str = await delete_task_handler(
             date=date,
             task_number=task_number,
             telegram_user_id=telegram_user_id,
         )
+    except ValueError:
+        await bot.reply_to(
+            message,
+            "Введена дата в неверном формате."
+        )
+        return
     except TaskNotExists:
         await bot.reply_to(
             message, 
@@ -84,11 +108,18 @@ async def finish_task(message):
     telegram_user_id = message.chat.id
     
     try:
+        await date_validate(date)
         task_text: str = await finish_task_handler(
             date=date,
             task_number=task_number,
             telegram_user_id=telegram_user_id,
         )
+    except ValueError:
+        await bot.reply_to(
+            message,
+            "Введена дата в неверном формате."
+        )
+        return
     except TaskNotExists:
         await bot.reply_to(
             message, 

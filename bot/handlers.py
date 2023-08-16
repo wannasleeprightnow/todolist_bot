@@ -3,12 +3,12 @@ from db.sql import *
 from utils.exceptions import *
 
 
-
 async def add_task_handler(
     task_text: str,
     planned_date: str,
     telegram_user_id: int
     ) -> None:
+    
     tasks = await fetch_all(
         sql=CHECK_TASK_COPY,
         params=(task_text, planned_date, telegram_user_id)
