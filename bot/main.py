@@ -10,7 +10,12 @@ bot = AsyncTeleBot(TOKEN)
 
 @bot.message_handler(commands=["start", "help"])
 async def send_welcome_and_help(message):
-    await bot.reply_to(message, "Привет!")
+    await bot.reply_to(message, 
+                       "\n".join(["/add <дата> <дело> - добавляет дело в список даты.",
+                        "/view_day <дата> - выводит список дел даты.",
+                        "/delete_task <дата> <номер дела> - удаляет дело из списка даты. Номер дела - из команды /view_day",
+                        "/finish_task <дата> <номер дела> - отмечает дело завершеным. Номер дела - из команды /view_day"])
+                       )
     
     
 @bot.message_handler(commands=["add"])
