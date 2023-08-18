@@ -1,8 +1,8 @@
-from typing import Coroutine, Iterable
+from typing import Iterable
 import aiosqlite
 import asyncio
 
-from utils.config import DB_PATH
+from config import DB_PATH
 
 
 async def _get_db() -> aiosqlite.Connection:
