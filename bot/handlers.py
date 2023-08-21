@@ -5,7 +5,7 @@ from db.db import *
 from db.sql import *
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("""Привет! Это телеграм-бот-todo_list, он нужен для ведеия списка дел. Вот его команды:
+    await update.message.reply_text("""Привет! Это телеграм-бот-todo_list, он нужен для ведения списка дел. Вот его команды:
 /add <дата> <дело> — добавляет дело в список даты.
 /view_day <дата> — выводит список дел даты.
 /delete_task <дата> <номер дела> — удаляет дело из списка даты. Номер дела — из команды /view_day.
